@@ -18,6 +18,8 @@ const dino = {
   y: dinoY,
   width: dinoWidth,
   height: dinoHeight,
+  speed: 0,
+  gravity: 0.45
 };
 
 //Obstacle cactus
@@ -59,6 +61,8 @@ function initDino() {
 
 // Draw Dino on the canvas
 function drawDino() {
+  dino.speed += dino.gravity
+  dino.y = Math.min(dino.y + dino.speed, dinoY);
   context.drawImage(dinoImg, dino.x, dino.y, dino.width, dino.height);
 }
 
@@ -123,37 +127,10 @@ function update() {
 
 const jumpStatus = {up: false, down: false}
 
-document.addEventListener('keyup', event => {
-  event.preventDefault();
-  if (event.code === 'Space') {
-    if(jumpStatus.up) return
-    if(jumpStatus.down) return
-    jumpStatus.up = true
-    dinoJump()
+document.addEventListener('keyup', dinoJump)
+
+function dinoJump(event){
+  if(event.code === 'Space'){
+    dino.speed = -11;
   }
-})
-
-let targetUp = dinoY - 100;
-
-const animateJump = () => {
-  let step = 3
-  if(jumpStatus.up){
-    dino.y = dino.y - step
-    if(dino.y <= targetUp) {
-      jumpStatus.up = false
-      jumpStatus.down = true
-    }
-  } else if(jumpStatus.down) {
-    dino.y = dino.y + step
-    if(dino.y >= dinoY) {
-      jumpStatus.up = false
-      jumpStatus.down = false
-      return
-    }
-  }
-  requestAnimationFrame(animateJump);
-};
-
-function dinoJump(){
-  requestAnimationFrame(animateJump)
 }
