@@ -136,16 +136,16 @@ document.addEventListener('keyup', event => {
 let targetUp = dinoY - 100;
 
 const animateJump = () => {
-  let step = 2
+  let step = 3
   if(jumpStatus.up){
     dino.y = dino.y - step
-    if(dino.y === targetUp) {
+    if(dino.y <= targetUp) {
       jumpStatus.up = false
       jumpStatus.down = true
     }
   } else if(jumpStatus.down) {
     dino.y = dino.y + step
-    if(dino.y === dinoY) {
+    if(dino.y >= dinoY) {
       jumpStatus.up = false
       jumpStatus.down = false
       return
