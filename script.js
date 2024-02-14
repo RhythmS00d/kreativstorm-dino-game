@@ -11,7 +11,9 @@ let dinoX = 50;
 let dinoY = boardHeight - dinoHeight;
 let dinoImg;
 
-let dino = {
+// const dinoY = (offset = 0) => boardHeight - dinoHeight - offset;
+
+const dino = {
   x: dinoX,
   y: dinoY,
   width: dinoWidth,
@@ -117,4 +119,44 @@ function update() {
 
   drawDino();
   drawCactuses();
+}
+
+const jumpStatus = {up: false, down: false}
+
+document.addEventListener('keyup', event => {
+  event.preventDefault();
+  if (event.code === 'Space') {
+    if(jumpStatus.up) return
+    if(jumpStatus.down) return
+    jumpStatus.up = true
+    dinoJump()
+  }
+})
+
+let targetUp = dinoY - 100;
+
+const animateJump = () => {
+  let step = 2
+  if(jumpStatus.up){
+    dino.y = dino.y - step
+    if(dino.y != targetUp){
+      requestAnimationFrame(animateJump);
+    } else {
+      jumpStatus.up = false
+      jumpStatus.down = true
+      requestAnimationFrame(animateJump)
+    }
+  } else if(jumpStatus.down) {
+    dino.y = dino.y + step
+    if(dino.y != dinoY){
+      requestAnimationFrame(animateJump);
+    } else {
+      jumpStatus.up = false
+      jumpStatus.down = false
+    }
+  }
+};
+
+function dinoJump(){
+  requestAnimationFrame(animateJump)
 }
