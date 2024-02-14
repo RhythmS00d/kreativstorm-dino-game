@@ -45,7 +45,8 @@ window.onload = function () {
 
   initDino();
   initCactuses();
-  requestAnimationFrame(update);
+  // requestAnimationFrame(update);
+  let interval = setInterval(update, 10)
 };
 
 function initDino() {
@@ -61,45 +62,31 @@ function initDino() {
 function drawDino() {
   context.drawImage(dinoImg, dino.x, dino.y, dino.width, dino.height);
 }
+function cactus(width, img) {
+    this.x = cactusX
+    this.y = cactusY
+    this.width = width
+    this.height = cactusHeight
+    this.img = img
+}
 
 function initCactuses() {
   cactus1Img = new Image();
   cactus1Img.src = './images/cactus1.png';
-  // Push the cactus1 in the array
-  cactusArray.push({
-    x: cactusX,
-    y: cactusY,
-    width: cactus1Width,
-    height: cactusHeight,
-    img: cactus1Img,
-  });
-
   cactus2Img = new Image();
   cactus2Img.src = './images/cactus2.png';
-  // Push the cactus2 in the array
-  cactusArray.push({
-    x: cactusX,
-    y: cactusY,
-    width: cactus2Width,
-    height: cactusHeight,
-    img: cactus2Img,
-  });
-
   cactus3Img = new Image();
   cactus3Img.src = './images/cactus3.png';
-  // Push the cactus3 in the array
-  cactusArray.push({
-    x: cactusX,
-    y: cactusY,
-    width: cactus3Width,
-    height: cactusHeight,
-    img: cactus3Img,
-  });
+
+  cactusArray.push(
+    new cactus(cactus1Width, cactus1Img),
+    new cactus(cactus2Width, cactus2Img),
+    new cactus(cactus3Width, cactus3Img)
+    );
 }
 
 // Draw all cactuses on the canvas
-function drawCactuses() {
-  for (const cactus of cactusArray) {
+function drawCactus(cactus) {
     context.drawImage(
       cactus.img,
       cactus.x,
@@ -107,18 +94,33 @@ function drawCactuses() {
       cactus.width,
       cactus.height
     );
-  }
 }
 
-// Animation loop
-function update() {
-  requestAnimationFrame(update);
+// // Animation loop
+// function update() {
+//   requestAnimationFrame(update);
 
-  // Clear the canvas
+//   // Clear the canvas
+//   context.clearRect(0, 0, board.width, board.height);
+
+//   drawDino();
+//   // drawCactuses();
+//   // console.log(cactusArray[0])
+//   // drawCactus(cactusArray[0])
+// }
+
+let cactusCount = 0
+function update(){
   context.clearRect(0, 0, board.width, board.height);
-
   drawDino();
-  drawCactuses();
+  cactusArray[cactusCount].x += -1;
+  console.log(cactusCount)
+  drawCactus(cactusArray[cactusCount])
+  if(cactusArray[cactusCount].x < 0-cactusArray[cactusCount].width){
+    cactusArray[cactusCount].x = cactusX
+    cactusCount++
+  }
+  if(cactusCount === cactusArray.length) cactusCount = 0
 }
 
 const jumpStatus = {up: false, down: false}
@@ -136,15 +138,16 @@ document.addEventListener('keyup', event => {
 let targetUp = dinoY - 100;
 
 const animateJump = () => {
-  let step = 3
+  let stepUp = 3
+  let stepDown = 0.7
   if(jumpStatus.up){
-    dino.y = dino.y - step
+    dino.y = dino.y - stepUp
     if(dino.y <= targetUp) {
       jumpStatus.up = false
       jumpStatus.down = true
     }
   } else if(jumpStatus.down) {
-    dino.y = dino.y + step
+    dino.y = dino.y + stepDown
     if(dino.y >= dinoY) {
       jumpStatus.up = false
       jumpStatus.down = false
