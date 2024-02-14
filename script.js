@@ -139,22 +139,19 @@ const animateJump = () => {
   let step = 2
   if(jumpStatus.up){
     dino.y = dino.y - step
-    if(dino.y != targetUp){
-      requestAnimationFrame(animateJump);
-    } else {
+    if(dino.y === targetUp) {
       jumpStatus.up = false
       jumpStatus.down = true
-      requestAnimationFrame(animateJump)
     }
   } else if(jumpStatus.down) {
     dino.y = dino.y + step
-    if(dino.y != dinoY){
-      requestAnimationFrame(animateJump);
-    } else {
+    if(dino.y === dinoY) {
       jumpStatus.up = false
       jumpStatus.down = false
+      return
     }
   }
+  requestAnimationFrame(animateJump);
 };
 
 function dinoJump(){
