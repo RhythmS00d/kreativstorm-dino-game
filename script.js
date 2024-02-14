@@ -76,7 +76,7 @@ function initCactuses() {
   cactus2Img.src = './images/cactus2.png';
   // Push the cactus2 in the array
   cactusArray.push({
-    x: cactusX + 150,
+    x: cactusX,
     y: cactusY,
     width: cactus2Width,
     height: cactusHeight,
@@ -87,7 +87,7 @@ function initCactuses() {
   cactus3Img.src = './images/cactus3.png';
   // Push the cactus3 in the array
   cactusArray.push({
-    x: cactusX + 300,
+    x: cactusX,
     y: cactusY,
     width: cactus3Width,
     height: cactusHeight,
