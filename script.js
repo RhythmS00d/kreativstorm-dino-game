@@ -11,14 +11,19 @@ let dinoX = 50;
 let dinoY = boardHeight - dinoHeight;
 let dinoImg;
 
-let dino = {
+// const dinoY = (offset = 0) => boardHeight - dinoHeight - offset;
+
+const dino = {
   x: dinoX,
   y: dinoY,
   width: dinoWidth,
   height: dinoHeight,
+  speed: 0,
+  gravity: 0.45
 };
 
 //Obstacle cactus
+let cactus;
 let cactusArray = [];
 
 let cactus1Width = 35;
@@ -57,6 +62,8 @@ function initDino() {
 
 // Draw Dino on the canvas
 function drawDino() {
+  dino.speed += dino.gravity
+  dino.y = Math.min(dino.y + dino.speed, dinoY);
   context.drawImage(dinoImg, dino.x, dino.y, dino.width, dino.height);
 }
 
@@ -96,16 +103,15 @@ function initCactuses() {
 }
 
 // Draw all cactuses on the canvas
-function drawCactuses() {
-  for (const cactus of cactusArray) {
-    context.drawImage(
-      cactus.img,
-      cactus.x,
-      cactus.y,
-      cactus.width,
-      cactus.height
-    );
-  }
+function drawCactus() {
+  cactus.x += -5;
+
+  context.drawImage(
+    cactus.img,
+    cactus.x,
+    cactus.y,
+    cactus.width,
+    cactus.height)
 }
 
 // Animation loop
@@ -116,5 +122,29 @@ function update() {
   context.clearRect(0, 0, board.width, board.height);
 
   drawDino();
-  drawCactuses();
+  cactusPicker()
+  drawCactus();
+}
+
+document.addEventListener('keyup', dinoJump)
+
+function dinoJump(event){
+  if(event.code === 'Space'){
+    if(dino.y === dinoY) {
+      dino.speed = -11;
+    }
+  }
+}
+
+function cactusPicker(){
+  if(cactus){
+    if(cactus.x < 0 - cactus.width){
+      cactus.x = cactusX
+    } else {
+      return
+    }
+  }
+  let random = Math.floor(Math.random() * cactusArray.length)
+
+  cactus = cactusArray[random]
 }
