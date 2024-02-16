@@ -137,15 +137,10 @@ function dinoJump(event) {
   }
 }
 
-function clearOffscreenCacti() {
-  cactusArray = cactusArray.filter((cactus) => cactus.x + cactus.width > 0);
-}
-
 function cactusPicker() {
   if (cactus) {
     if (cactus.x < 0 - cactus.width) {
       cactus.x = cactusX;
-      clearOffscreenCacti();
     } else {
       return;
     }
