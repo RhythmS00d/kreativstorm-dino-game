@@ -1,4 +1,4 @@
-# Week 3 Javascript Project 1
+# Week 4 Game Project 2
 
 To view the live version of the game, [click here](https://kreativstorm-dino-game.vercel.app)
 
