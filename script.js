@@ -185,7 +185,7 @@ function collisionDetection() {
   endGame_Sound.src = "./sounds/end-game.mp3";
 
   if (
-    dino.x + dino.width / 1.7 >= cactus?.x &&
+    dino.x + dino.width / 1.8 >= cactus?.x &&
     dino.x <= cactus?.x + cactus?.width
   ) {
     if (dino.y + dino.height / 1.7 >= cactus?.y) {
