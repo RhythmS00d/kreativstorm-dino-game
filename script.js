@@ -48,6 +48,23 @@ let score = 0;
 
 //Display board, dino and cactus
 window.onload = function () {
+  document.addEventListener(
+    "keydown",
+    (e) => {
+      if (e.code === "Space") {
+        requestAnimationFrame(update);
+        gameStarted = true;
+        document.querySelector("main").classList.remove("hide");
+        document.querySelector(".start-screen").classList.add("hide");
+      }
+    },
+    { once: true }
+  );
+
+  startGame()
+}
+
+function startGame() {
   intialBoard.board = document.getElementById("board");
   intialBoard.board.height = intialBoard.boardHeight;
   intialBoard.board.width = intialBoard.boardWidth;
@@ -56,19 +73,6 @@ window.onload = function () {
 
   initDino();
   initCactuses();
-
-  document.addEventListener(
-    "keydown",
-    (e) => {
-      if (e.code === "Space") {
-        requestAnimationFrame(update);
-        gameStarted = true;
-        document.querySelector("main").classList.remove("hide")
-        document.querySelector(".start-screen").classList.add("hide")
-      }
-    },
-    { once: true }
-  );
 };
 
 function initDino() {
@@ -139,7 +143,7 @@ function update() {
 
     intialDino.dinoImg = new Image();
     intialDino.dinoImg.src = `./images/dino-run-${randImgIndex}.png`;
-  }, 250)
+  }, 250);
 
   drawDino();
   cactusPicker();
@@ -189,7 +193,7 @@ function collisionDetection() {
     dino.x <= cactus?.x + cactus?.width
   ) {
     if (dino.y + dino.height / 1.7 >= cactus?.y) {
-      endGame_Sound.play()
+      endGame_Sound.play();
       endGame();
     }
   }
@@ -197,6 +201,21 @@ function collisionDetection() {
 
 function endGame() {
   cancelAnimationFrame(animationId);
+
+  document.getElementById("end-score").innerHTML = score;
+  document.querySelector(".end-screen").classList.remove("hide");
+  document.querySelector("main").classList.add("hide");
+  document.removeEventListener("keydown", dinoJump);
+
+  document.addEventListener(
+    "keydown",
+    (e) => {
+      if (e.code === "Space") {
+        window.location.reload()
+      }
+    },
+    { once: true }
+  );
 }
 
 function updateScore() {
